@@ -13,7 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.andikas.libr.R
 
 @Composable
 fun SearchSection(
@@ -50,7 +52,7 @@ fun SearchSection(
         ) {
             Icon(
                 imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite books",
+                contentDescription = stringResource(id = R.string.favorite_books),
             )
         }
     }

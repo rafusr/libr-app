@@ -12,9 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.andikas.libr.R
 import com.andikas.libr.utils.Extension
 
 @Composable
@@ -23,8 +25,8 @@ fun TitleSection(
     title: String,
     shouldBack: Boolean = false,
     isHome: Boolean = false,
-    onBackPressed: (() -> Unit?)? = null,
-    onAboutPressed: (() -> Unit?)? = null,
+    navigateBack: (() -> Unit?)? = null,
+    navigateToAbout: (() -> Unit?)? = null,
 ) {
     Row(
         horizontalArrangement = if (shouldBack) Arrangement.Start else Arrangement.SpaceBetween,
@@ -45,11 +47,11 @@ fun TitleSection(
                 contentColor = Color.DarkGray
             ),
             elevation = null,
-            onClick = { onBackPressed?.invoke() }
+            onClick = { navigateBack?.invoke() }
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
-                contentDescription = "about_page",
+                contentDescription = stringResource(id = R.string.about_page),
             )
         }
         Text(
@@ -78,11 +80,11 @@ fun TitleSection(
                 contentColor = MaterialTheme.colors.surface
             ),
             elevation = null,
-            onClick = { onAboutPressed?.invoke() }
+            onClick = { navigateToAbout?.invoke() }
         ) {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "about_page",
+                contentDescription = stringResource(id = R.string.back),
             )
         }
     }

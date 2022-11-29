@@ -52,7 +52,7 @@ fun LibrApp(
         }
         composable(Screen.Favorite.route) {
             FavoriteScreen(
-                onBackPressed = {
+                navigateBack = {
                     navHostController.navigateUp()
                 },
                 navigateToDetail = { detailId ->
@@ -62,7 +62,7 @@ fun LibrApp(
         }
         composable(Screen.About.route) {
             AboutScreen(
-                onBackPressed = {
+                navigateBack = {
                     navHostController.navigateUp()
                 }
             )

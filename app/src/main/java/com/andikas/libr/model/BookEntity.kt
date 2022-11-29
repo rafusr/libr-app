@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "books")
 data class BookEntity(
-    @PrimaryKey
-    var id: Long,
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0,
     var image: Int,
     var title: String,
     var summary: String,

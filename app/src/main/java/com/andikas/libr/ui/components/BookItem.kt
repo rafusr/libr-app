@@ -37,8 +37,6 @@ fun BookItem(
     onFavoriteClick: (id: Long, isFavorite: Boolean) -> Unit,
 ) {
     var setFavorite by remember { mutableStateOf(isFavorite) }
-    println("INI IS FAVORITE == $isFavorite")
-    println("INI SET FAVORITE == $setFavorite")
 
     Card(
         shape = RoundedCornerShape(8.dp),

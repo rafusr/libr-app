@@ -1,7 +1,10 @@
 package com.andikas.libr.ui.screen.about
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -12,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.andikas.libr.R
@@ -21,18 +25,18 @@ import com.andikas.libr.utils.Extension
 @Composable
 fun AboutScreen(
     modifier: Modifier = Modifier,
-    onBackPressed: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     AboutContent(
         modifier = modifier,
-        onBackPressed = onBackPressed
+        navigateBack = navigateBack
     )
 }
 
 @Composable
 fun AboutContent(
     modifier: Modifier = Modifier,
-    onBackPressed: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -47,42 +51,31 @@ fun AboutContent(
             ),
     ) {
         TitleSection(
-            title = "About",
+            title = stringResource(id = R.string.about),
             shouldBack = true,
-            onBackPressed = { onBackPressed() }
+            navigateBack = navigateBack
         )
-        Row(
+        Image(
+            painter = painterResource(id = R.drawable.andikas),
             modifier = Modifier
-                .fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.andikas),
-                modifier = Modifier
-                    .height(128.dp)
-                    .padding(top = 16.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentDescription = "Andika Sultanrafli"
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(
-                    text = "Andika Sultanrafli",
-                    style = MaterialTheme.typography.h6.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = Extension.librFonts,
-                    ),
-                )
-                Text(
-                    text = "andpuji27@gmail.com",
-                    style = MaterialTheme.typography.subtitle1.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = Extension.librFonts,
-                    ),
-                )
-            }
-        }
+                .height(128.dp)
+                .padding(top = 16.dp)
+                .clip(RoundedCornerShape(8.dp)),
+            contentDescription = stringResource(id = R.string.dev_name)
+        )
+        Text(
+            text = stringResource(id = R.string.dev_name),
+            style = MaterialTheme.typography.h6.copy(
+                fontWeight = FontWeight.Bold,
+                fontFamily = Extension.librFonts,
+            ),
+        )
+        Text(
+            text = stringResource(id = R.string.dev_email),
+            style = MaterialTheme.typography.subtitle1.copy(
+                fontWeight = FontWeight.Bold,
+                fontFamily = Extension.librFonts,
+            ),
+        )
     }
 }

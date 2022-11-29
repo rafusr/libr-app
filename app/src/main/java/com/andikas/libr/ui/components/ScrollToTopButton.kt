@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.andikas.libr.R
 
 @Composable
 fun ScrollToTopButton(
@@ -34,7 +36,7 @@ fun ScrollToTopButton(
     ) {
         Icon(
             imageVector = Icons.Filled.KeyboardArrowUp,
-            contentDescription = "Back to top",
+            contentDescription = stringResource(id = R.string.scroll_to_top),
         )
     }
 }

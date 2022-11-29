@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Libr</string>
+    <string name="dev_name">Andika Sultanrafli</string>
+    <string name="dev_email">andpuji27@gmail.com</string>
     <string name="find_books">Cari Buku</string>
+    <string name="author">Author : %1$s</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorite_books">Buku favorit</string>
+    <string name="add_to_favorite">Tambah ke favorit</string>
+    <string name="empty">Kosong</string>
+    <string name="scroll_to_top">Scroll to top</string>
+    <string name="about_page">about_page</string>
+    <string name="about">About</string>
+    <string name="back">Back</string>
+    <string name="warning">Warning</string>
 </resources>

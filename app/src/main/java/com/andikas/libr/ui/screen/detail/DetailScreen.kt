@@ -9,17 +9,19 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.andikas.libr.R
 import com.andikas.libr.ui.common.UiState
+import com.andikas.libr.ui.components.ErrorSection
 import com.andikas.libr.ui.components.LoadingSection
 import com.andikas.libr.ui.components.TitleSection
 
@@ -46,13 +48,11 @@ fun DetailScreen(
                     author = uiState.data.author ?: "",
                     isFavorite = uiState.data.isFavorite,
                     navigateBack = navigateBack,
-                    onFavoriteClick = { id, isFavorite ->
-
-                    },
+                    onFavoriteClick = viewModel::updateBook,
                 )
             }
             is UiState.Error -> {
-
+                ErrorSection(message = uiState.errorMessage)
             }
         }
     }
@@ -70,6 +70,8 @@ fun DetailContent(
     navigateBack: () -> Unit,
     onFavoriteClick: (id: Long, isFavorite: Boolean) -> Unit,
 ) {
+    var setFavorite by remember { mutableStateOf(isFavorite) }
+
     Box(
         modifier = modifier,
     ) {
@@ -88,7 +90,7 @@ fun DetailContent(
             TitleSection(
                 title = title,
                 shouldBack = true,
-                onBackPressed = { navigateBack() }
+                navigateBack = navigateBack
             )
             Image(
                 painter = painterResource(id = image),
@@ -105,7 +107,7 @@ fun DetailContent(
                     .padding(top = 16.dp),
             )
             Text(
-                text = "Author  : $author",
+                text = stringResource(id = R.string.author, author),
                 style = MaterialTheme.typography.subtitle2.copy(
                     color = Color.Gray
                 ),
@@ -122,16 +124,19 @@ fun DetailContent(
                 .shadow(8.dp, shape = RoundedCornerShape(16.dp))
                 .clip(shape = RoundedCornerShape(16.dp))
                 .size(56.dp),
-            onClick = { onFavoriteClick(id, isFavorite) },
+            onClick = {
+                setFavorite = !setFavorite
+                onFavoriteClick(id, setFavorite)
+            },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.White,
                 contentColor = Color(0xFFFF4D4D)
             )
         ) {
             Icon(
-                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                imageVector = if (setFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 tint = Color(0xFFFF4D4D),
-                contentDescription = "Add to favorite",
+                contentDescription = stringResource(id = R.string.add_to_favorite),
             )
         }
     }

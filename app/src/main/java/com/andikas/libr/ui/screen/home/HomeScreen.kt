@@ -8,16 +8,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andikas.libr.R
 import com.andikas.libr.model.BookEntity
-import com.andikas.libr.model.BooksData
 import com.andikas.libr.ui.common.UiState
 import com.andikas.libr.ui.components.*
-import com.andikas.libr.utils.Extension.shortToast
 import kotlinx.coroutines.launch
 
 @Composable
@@ -28,10 +25,9 @@ fun HomeScreen(
     navigateToFavorite: () -> Unit,
     navigateToDetail: (id: Long) -> Unit,
 ) {
-    val query by viewModel.query
-    val context = LocalContext.current
+    val query by remember { mutableStateOf("") }
 
-    viewModel.uiState.collectAsState(initial = UiState.Success(BooksData.books)).value.let { uiState ->
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
             is UiState.Loading -> {
                 LoadingSection()
@@ -46,13 +42,11 @@ fun HomeScreen(
                     navigateToFavorite = navigateToFavorite,
                     navigateToDetail = navigateToDetail,
                     navigateToAbout = navigateToAbout,
-                    onFavoriteClick = { id, isFavorite ->
-                        viewModel.updateBook(id, isFavorite)
-                    }
+                    onFavoriteClick = viewModel::updateBook
                 )
             }
             is UiState.Error -> {
-
+                ErrorSection(message = uiState.errorMessage)
             }
         }
     }
@@ -86,6 +80,7 @@ fun HomeContent(
                 bottom = 80.dp
             ),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Column(
@@ -94,30 +89,35 @@ fun HomeContent(
                     TitleSection(
                         title = stringResource(R.string.app_name),
                         isHome = true,
-                        onAboutPressed = { navigateToAbout() }
+                        navigateToAbout = navigateToAbout
                     )
                     SearchSection(
                         query = query,
                         onQueryChange = onQueryChange,
                         isHome = true,
-                        navigateToFavorite = { navigateToFavorite() }
+                        navigateToFavorite = navigateToFavorite
                     )
                 }
             }
-            items(books, key = { it.id }) { book ->
-                BookItem(
-                    id = book.id,
-                    image = book.image,
-                    title = book.title,
-                    summary = book.summary,
-                    isFavorite = book.isFavorite,
-                    onFavoriteClick = { id, isFavorite ->
-                        onFavoriteClick(id, isFavorite)
-                    },
-                    onItemClick = { detailId ->
-                        navigateToDetail(detailId)
-                    }
-                )
+            if (books.isNotEmpty()) {
+                items(books, key = { it.id }) { book ->
+                    BookItem(
+                        id = book.id,
+                        image = book.image,
+                        title = book.title,
+                        summary = book.summary,
+                        isFavorite = book.isFavorite,
+                        onFavoriteClick = onFavoriteClick,
+                        onItemClick = navigateToDetail
+                    )
+                }
+            } else {
+                item {
+                    EmptySection(
+                        modifier = Modifier
+                            .padding(64.dp)
+                    )
+                }
             }
         }
         AnimatedVisibility(

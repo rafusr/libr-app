@@ -1,7 +1,5 @@
 package com.andikas.libr.ui.screen.favorite
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andikas.libr.data.LibrRepository
@@ -21,9 +19,6 @@ class FavoriteViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _query = mutableStateOf("")
-    val query: State<String> get() = _query
-
     private val _uiState: MutableStateFlow<UiState<List<BookEntity>>> =
         MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState<List<BookEntity>>> get() = _uiState
@@ -40,10 +35,15 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
+    fun updateBook(id: Long, isFavorite: Boolean) {
+        viewModelScope.launch(ioDispatcher) {
+            librRepository.updateBook(id, isFavorite)
+        }
+    }
+
     fun searchFavoriteBooks(newQuery: String) {
         viewModelScope.launch(ioDispatcher) {
-            _query.value = newQuery
-            librRepository.searchFavoriteBooks(_query.value)
+            librRepository.searchFavoriteBooks(newQuery)
                 .catch {
                     _uiState.value = UiState.Error(it.message.toString())
                 }

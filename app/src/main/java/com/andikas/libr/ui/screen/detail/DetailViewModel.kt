@@ -35,4 +35,10 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    fun updateBook(id: Long, isFavorite: Boolean) {
+        viewModelScope.launch(ioDispatcher) {
+            librRepository.updateBook(id, isFavorite)
+        }
+    }
+
 }

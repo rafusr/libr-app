@@ -19,10 +19,10 @@ interface BookDao {
     @Query("SELECT * FROM books WHERE id = :id")
     fun getBookDetail(id: Long): Flow<BookEntity>
 
-    @Query("SELECT * FROM books WHERE title = :query")
+    @Query("SELECT * FROM books WHERE title LIKE '%' || :query || '%'")
     fun searchBooks(query: String): Flow<List<BookEntity>>
 
-    @Query("SELECT * FROM books WHERE isFavorite = 1 AND title = :query")
+    @Query("SELECT * FROM books WHERE isFavorite = 1 AND title LIKE '%' || :query || '%'")
     fun searchFavoriteBooks(query: String): Flow<List<BookEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
