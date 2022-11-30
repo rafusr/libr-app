@@ -1,4 +1,4 @@
-package com.andikas.libr
+package com.andikas.libr.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,16 +21,16 @@ import com.andikas.libr.ui.theme.LibrTheme
 @Composable
 fun LibrApp(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController()
 ) {
     NavHost(
-        navController = navHostController,
+        navController = navController,
         startDestination = Screen.Splash.route,
         modifier = modifier,
     ) {
         composable(Screen.Splash.route) {
             SplashScreen {
-                navHostController.navigate(Screen.Home.route) {
+                navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Splash.route) {
                         inclusive = true
                     }
@@ -40,30 +40,30 @@ fun LibrApp(
         composable(Screen.Home.route) {
             HomeScreen(
                 navigateToAbout = {
-                    navHostController.navigate(Screen.About.route)
+                    navController.navigate(Screen.About.route)
                 },
                 navigateToFavorite = {
-                    navHostController.navigate(Screen.Favorite.route)
+                    navController.navigate(Screen.Favorite.route)
                 },
                 navigateToDetail = { detailId ->
-                    navHostController.navigate(Screen.Detail.createRoute(detailId))
+                    navController.navigate(Screen.Detail.createRoute(detailId))
                 }
             )
         }
         composable(Screen.Favorite.route) {
             FavoriteScreen(
                 navigateBack = {
-                    navHostController.navigateUp()
+                    navController.navigateUp()
                 },
                 navigateToDetail = { detailId ->
-                    navHostController.navigate(Screen.Detail.createRoute(detailId))
+                    navController.navigate(Screen.Detail.createRoute(detailId))
                 }
             )
         }
         composable(Screen.About.route) {
             AboutScreen(
                 navigateBack = {
-                    navHostController.navigateUp()
+                    navController.navigateUp()
                 }
             )
         }
@@ -75,7 +75,7 @@ fun LibrApp(
             DetailScreen(
                 detailId = id,
                 navigateBack = {
-                    navHostController.navigateUp()
+                    navController.navigateUp()
                 }
             )
         }
