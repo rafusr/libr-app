@@ -24,7 +24,7 @@ fun FavoriteScreen(
     navigateBack: () -> Unit,
     navigateToDetail: (Long) -> Unit,
 ) {
-    val query by remember { mutableStateOf("") }
+    val query by viewModel.query
 
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {

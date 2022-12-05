@@ -1,5 +1,7 @@
 package com.andikas.libr.ui.screen.home
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andikas.libr.data.LibrRepository
@@ -18,6 +20,9 @@ class HomeViewModel @Inject constructor(
     private val librRepository: LibrRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
+
+    private val _query = mutableStateOf("")
+    val query: State<String> get() = _query
 
     private val _uiState: MutableStateFlow<UiState<List<BookEntity>>> =
         MutableStateFlow(UiState.Loading)
@@ -43,7 +48,8 @@ class HomeViewModel @Inject constructor(
 
     fun searchBooks(newQuery: String) {
         viewModelScope.launch(ioDispatcher) {
-            librRepository.searchBooks(newQuery)
+            _query.value = newQuery
+            librRepository.searchBooks(_query.value)
                 .catch {
                     _uiState.value = UiState.Error(it.message.toString())
                 }
